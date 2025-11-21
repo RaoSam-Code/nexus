@@ -4,6 +4,13 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { Users, MessageSquare, MonitorPlay, PenTool, Gamepad2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import Whiteboard from './activities/Whiteboard'
+import WordGuess from './activities/WordGuess'
+import WatchParty from './activities/WatchParty'
+import TicTacToe from './activities/TicTacToe'
+import Snake from './activities/Snake'
+import MemoryMatch from './activities/MemoryMatch'
+import RockPaperScissors from './activities/RockPaperScissors'
 
 type User = {
     id: string
@@ -11,17 +18,9 @@ type User = {
     avatar_url?: string
 }
 
-type PresenceState = {
-    [key: string]: {
-        user_id: string
-        online_at: string
-        email: string
-    }[]
-}
-
 export default function Room({ roomId }: { roomId: string }) {
     const [users, setUsers] = useState<any[]>([])
-    const [activeActivity, setActiveActivity] = useState<'whiteboard' | 'wordguess' | 'watchparty' | null>(null)
+    const [activeActivity, setActiveActivity] = useState<'whiteboard' | 'wordguess' | 'watchparty' | 'tictactoe' | 'snake' | 'memorymatch' | 'rps' | null>(null)
     const [currentUser, setCurrentUser] = useState<User | null>(null)
 
     useEffect(() => {
@@ -54,10 +53,10 @@ export default function Room({ roomId }: { roomId: string }) {
                 const presentUsers = Object.values(newState).flat()
                 setUsers(presentUsers)
             })
-            .on('broadcast', { event: 'activity_change' }, ({ payload }) => {
+            .on('broadcast', { event: 'activity_change' }, ({ payload }: { payload: { activity: 'whiteboard' | 'wordguess' | 'watchparty' } }) => {
                 setActiveActivity(payload.activity)
             })
-            .subscribe(async (status) => {
+            .subscribe(async (status: 'SUBSCRIBED' | 'TIMED_OUT' | 'CLOSED' | 'CHANNEL_ERROR') => {
                 if (status === 'SUBSCRIBED') {
                     await channel.track({
                         user_id: currentUser.id,
@@ -72,7 +71,7 @@ export default function Room({ roomId }: { roomId: string }) {
         }
     }, [roomId, currentUser])
 
-    const changeActivity = async (activity: 'whiteboard' | 'wordguess' | 'watchparty') => {
+    const changeActivity = async (activity: 'whiteboard' | 'wordguess' | 'watchparty' | 'tictactoe' | 'snake' | 'memorymatch' | 'rps') => {
         setActiveActivity(activity)
         await supabase.channel(`room:${roomId}`).send({
             type: 'broadcast',
@@ -158,19 +157,71 @@ export default function Room({ roomId }: { roomId: string }) {
                         <MonitorPlay className="h-4 w-4" />
                         Watch Party
                     </button>
+
+                    <button
+                        onClick={() => changeActivity('tictactoe')}
+                        className={cn(
+                            "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all",
+                            activeActivity === 'tictactoe'
+                                ? "bg-blue-600 text-white shadow-lg shadow-blue-600/25"
+                                : "bg-white/5 hover:bg-white/10 text-muted-foreground hover:text-white"
+                        )}
+                    >
+                        <Gamepad2 className="h-4 w-4" />
+                        Tic Tac Toe
+                    </button>
+
+                    <button
+                        onClick={() => changeActivity('snake')}
+                        className={cn(
+                            "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all",
+                            activeActivity === 'snake'
+                                ? "bg-green-600 text-white shadow-lg shadow-green-600/25"
+                                : "bg-white/5 hover:bg-white/10 text-muted-foreground hover:text-white"
+                        )}
+                    >
+                        <Gamepad2 className="h-4 w-4" />
+                        Snake
+                    </button>
+
+                    <button
+                        onClick={() => changeActivity('memorymatch')}
+                        className={cn(
+                            "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all",
+                            activeActivity === 'memorymatch'
+                                ? "bg-purple-600 text-white shadow-lg shadow-purple-600/25"
+                                : "bg-white/5 hover:bg-white/10 text-muted-foreground hover:text-white"
+                        )}
+                    >
+                        <Gamepad2 className="h-4 w-4" />
+                        Memory Match
+                    </button>
+
+                    <button
+                        onClick={() => changeActivity('rps')}
+                        className={cn(
+                            "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all",
+                            activeActivity === 'rps'
+                                ? "bg-orange-600 text-white shadow-lg shadow-orange-600/25"
+                                : "bg-white/5 hover:bg-white/10 text-muted-foreground hover:text-white"
+                        )}
+                    >
+                        <Gamepad2 className="h-4 w-4" />
+                        Rock Paper Scissors
+                    </button>
                 </div>
 
                 {/* Activity Area */}
-                <div className="flex-1 p-6 relative overflow-hidden">
-                    {activeActivity ? (
-                        <div className="w-full h-full glass-panel rounded-2xl flex items-center justify-center">
-                            <div className="text-center">
-                                <h3 className="text-2xl font-bold mb-2 capitalize">{activeActivity}</h3>
-                                <p className="text-muted-foreground">Activity component loading...</p>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground space-y-4">
+                <div className="flex-1 relative overflow-hidden">
+                    {activeActivity === 'whiteboard' && <Whiteboard roomId={roomId} />}
+                    {activeActivity === 'wordguess' && <WordGuess roomId={roomId} />}
+                    {activeActivity === 'watchparty' && <WatchParty roomId={roomId} />}
+                    {activeActivity === 'tictactoe' && <TicTacToe roomId={roomId} />}
+                    {activeActivity === 'snake' && <Snake />}
+                    {activeActivity === 'memorymatch' && <MemoryMatch />}
+                    {activeActivity === 'rps' && <RockPaperScissors roomId={roomId} />}
+                    {!activeActivity && (
+                        <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground space-y-4 p-6">
                             <div className="w-24 h-24 rounded-full bg-white/5 flex items-center justify-center animate-pulse">
                                 <Gamepad2 className="h-10 w-10 opacity-50" />
                             </div>

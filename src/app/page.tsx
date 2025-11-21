@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { ArrowRight, Users, Zap, MonitorPlay } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 export default function Home() {
   return (
