@@ -69,10 +69,11 @@ export default function MemoryMatch() {
         if (newFlippedCards.length === 2) {
             setMoves(m => m + 1)
             const [first, second] = newFlippedCards
-            const firstCard = cards[first]
-            const secondCard = cards[second]
+            // Find cards by their id property, not by array index
+            const firstCard = cards.find(c => c.id === first)
+            const secondCard = cards.find(c => c.id === second)
 
-            if (firstCard.value === secondCard.value) {
+            if (firstCard && secondCard && firstCard.value === secondCard.value) {
                 // Match found
                 setTimeout(() => {
                     setCards(prevCards =>

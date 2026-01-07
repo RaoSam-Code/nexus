@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { supabase } from '@/lib/supabase'
+import { getCurrentUser } from '@/lib/getUser'
 import { Check, X, RotateCcw } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -38,7 +39,7 @@ export default function WordGuess({ roomId }: { roomId: string }) {
 
     useEffect(() => {
         const setupGame = async () => {
-            const { data: { user } } = await supabase.auth.getUser()
+            const user = await getCurrentUser()
 
             // Listen for game state updates
             const channel = supabase.channel(`wordguess:${roomId}`)
@@ -73,8 +74,7 @@ export default function WordGuess({ roomId }: { roomId: string }) {
     }, [roomId])
 
     const startNewGame = async () => {
-        const { data: { user } } = await supabase.auth.getUser()
-        if (!user) return
+        const user = await getCurrentUser()
 
         const randomWord = WORD_LIST[Math.floor(Math.random() * WORD_LIST.length)]
 

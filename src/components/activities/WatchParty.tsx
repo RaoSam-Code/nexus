@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
+import { getCurrentUser } from '@/lib/getUser'
 import { Play, Pause, ExternalLink } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -24,7 +25,7 @@ export default function WatchParty({ roomId }: { roomId: string }) {
 
     useEffect(() => {
         const setupSync = async () => {
-            const { data: { user } } = await supabase.auth.getUser()
+            const user = await getCurrentUser()
 
             const channel = supabase.channel(`watchparty:${roomId}`)
             channel

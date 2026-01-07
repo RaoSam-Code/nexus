@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
+import { getCurrentUser } from '@/lib/getUser'
 import { RotateCcw, Trophy } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -32,10 +33,8 @@ export default function TicTacToe({ roomId }: { roomId: string }) {
 
     useEffect(() => {
         const setupGame = async () => {
-            const { data: { user } } = await supabase.auth.getUser()
-            if (user) {
-                setUserId(user.id)
-            }
+            const user = await getCurrentUser()
+            setUserId(user.id)
 
             const channel = supabase.channel(`tictactoe:${roomId}`)
             channel
