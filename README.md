@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Nexus
+
+Nexus is a high-energy, real-time multiplayer platform designed for friends to hang out, chat, and play games together. It features a sleek, dark-themed glassmorphism UI with neon cyan and electric purple accents.
+
+## Features
+
+- **Guest Mode:** No signup required. Instantly create or join rooms using a magic code.
+- **Real-time Presence & Chat:** Persistent chat sidebar and member presence using Supabase Realtime.
+- **8 Built-in Activities:**
+  - 🎨 **Whiteboard:** Collaborative freehand drawing with multi-color brushes.
+  - ✏️ **Pictionary:** Draw-and-guess game with 5 rounds and a 60s timer.
+  - 🟩 **Word Guess:** A shared multiplayer Wordle clone with live sync.
+  - 🧠 **Trivia:** 10 fast-paced timed questions.
+  - 🍿 **Watch Party:** Synchronized YouTube video playback with a shared queue.
+  - ❌ **Tic Tac Toe:** Classic 2-player with spectator support.
+  - ♟️ **Chess:** 2-player chess with full legal move validation.
+  - ✊ **Rock Paper Scissors:** Best of 5 simultaneous reveal matches.
+
+## Tech Stack
+
+- **Framework:** Next.js 16 (App Router)
+- **UI:** React 19, Tailwind CSS v4, Lucide React (SVG icons)
+- **Backend & Sync:** Supabase (Auth & Realtime Channels)
+- **Styling:** Custom CSS variables & glassmorphism utilities (`@theme`)
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Set up environment variables in `.env`:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
+5. Open [http://localhost:3000](http://localhost:3000)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Deployment
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Deploy seamlessly to [Vercel](https://vercel.com/new). The GitHub Actions CI workflow automatically checks that the project builds successfully on every pull request.

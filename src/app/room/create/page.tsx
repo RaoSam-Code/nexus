@@ -26,7 +26,7 @@ export default function CreateRoomPage() {
     sessionStorage.setItem(`room_name_${roomId}`, name)
     sessionStorage.setItem(`room_template_${roomId}`, template.id)
     sessionStorage.setItem(`room_public_${roomId}`, String(isPublic))
-    router.push(`/room/${roomId}`)
+    router.push(`/room/play?id=${roomId}`)
   }
 
   return (

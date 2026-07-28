@@ -21,7 +21,7 @@ export default function RoomHeader({ roomId, roomName, memberCount, activeActivi
   const [copied, setCopied] = useState(false)
   const [showQR, setShowQR] = useState(false)
 
-  const roomUrl = typeof window !== 'undefined' ? `${window.location.origin}/room/${roomId}` : ''
+  const roomUrl = typeof window !== 'undefined' ? `${window.location.origin}/room/play?id=${roomId}` : ''
 
   const handleCopy = async () => {
     const ok = await copyToClipboard(roomUrl)

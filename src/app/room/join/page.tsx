@@ -13,7 +13,7 @@ export default function JoinRoomPage() {
   const handleJoin = (e: React.FormEvent) => {
     e.preventDefault()
     const clean = code.trim().replace(/[^a-zA-Z0-9]/g, '')
-    if (clean) router.push(`/room/${clean}`)
+    if (clean) router.push(`/room/play?id=${clean}`)
   }
 
   // Recent rooms from sessionStorage
@@ -72,7 +72,7 @@ export default function JoinRoomPage() {
                 {recentRooms.map(room => (
                   <button
                     key={room.id}
-                    onClick={() => router.push(`/room/${room.id}`)}
+                    onClick={() => router.push(`/room/play?id=${room.id}`)}
                     className="w-full btn-subtle justify-between text-left"
                   >
                     <span className="font-medium truncate">{room.name}</span>
