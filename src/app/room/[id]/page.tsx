@@ -1,11 +1,11 @@
-import Room from '@/components/Room'
+import RoomShell from '@/components/room/RoomShell'
 
-type Props = {
-    params: Promise<{ id: string }>
+interface Props {
+  params: Promise<{ id: string }>
 }
 
 export default async function RoomPage({ params }: Props) {
-    const { id } = await params
+  const { id } = await params
 
-    return <Room roomId={id} />
+  return <RoomShell roomId={id} roomName="Nexus Room" />
 }
